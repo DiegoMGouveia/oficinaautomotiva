@@ -1,4 +1,4 @@
-#casastrocliente simples 0.1
+#casastrocliente simples 0.2
 import clientenovo
 from clientenovo import limpa
 from clientenovo import Cliente
