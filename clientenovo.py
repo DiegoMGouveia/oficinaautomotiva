@@ -39,18 +39,18 @@ class Cliente:
     def InfoCliente(self):
         limpa()
         print('-'*35)
-        print(f'Nome do Cliente: {self.cliente}\n'
-              f'Contato: {self.contato}\n'
-              f'Endereço: {self.endereco}\n'
-              f'Placa: {self.placa}\n'
-              f'Marca/Modelo: {self.modelo}\n'
-              f'Cor: {self.cor}\n'
-              f'Ano: {self.ano}\n'
-              f'Tipo de serviço: {self.tipodeservico}\n'
-              f'Custo: {self.custo}\n'
-              f'Pagamento: {self.pago}\n'
-              f'Data: {self.data}\n'
+        print(f'Nome do Cliente.: {self.cliente}\n'
+              f'Contato.........: {self.contato}\n'
+              f'Endereço........: {self.endereco}\n'
+              f'Placa...........: {self.placa}\n'
+              f'Marca/Modelo....: {self.modelo}\n'
+              f'Cor.............: {self.cor}\n'
+              f'Ano.............: {self.ano}\n'
+              f'Tipo de serviço.: {self.tipodeservico}\n'
+              f'Custo...........: {self.custo}\n'
+              f'Pagamento.......: {self.pago}\n'
+              f'Data............: {self.data}\n'
               f'Prazo de entrega: {self.prazo}\n'
-              f'Observações: {self.observacao}\n')
+              f'Observações.....: {self.observacao}\n')
         print('-'*35)
 
