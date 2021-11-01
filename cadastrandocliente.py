@@ -27,7 +27,7 @@ def limpa(): #limpar a tela
 
 
 def ConexaoBanco(): #conexao com banco de dados
-    caminho = "/media/diego/EA00FB8D00FB5F4F/python3 projetos/lojacarros/basededadosoficina.db"
+    caminho = "insira aqui o caminho do seu banco de dados/basededadosoficina.db"
     con = None
     try:
         con = sqlite3.connect(caminho)
