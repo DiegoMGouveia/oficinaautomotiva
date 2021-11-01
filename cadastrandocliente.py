@@ -1,8 +1,7 @@
-#casastrocliente simples 0.3
+#casastrocliente simples 0.4
 from datetime import datetime
 import sqlite3
 from sqlite3 import Error
-
 
 # variaveis utilizadas na função cadastro() e
 nome = ''
@@ -18,8 +17,6 @@ custo = ''
 pago = ''
 data = ''
 prazo = ''
-importar = []
-
 
 
 def limpa(): #limpar a tela
@@ -27,17 +24,13 @@ def limpa(): #limpar a tela
 
 
 def ConexaoBanco(): #conexao com banco de dados
-    caminho = "insira aqui o caminho do seu banco de dados/basededadosoficina.db"
+    caminho = "/localdoseuarquivo/basededadosoficina.db"
     con = None
     try:
         con = sqlite3.connect(caminho)
     except Error as ex:
         print(ex)
     return con
-
-
-
-
 
 
 def insert(conexao,sql): #inserindo informações no banco de dados
@@ -48,6 +41,7 @@ def insert(conexao,sql): #inserindo informações no banco de dados
 
     except Error as ex:
         print(ex)
+
 
 vcon = ConexaoBanco()
 
@@ -138,3 +132,6 @@ def cadastro():
 
 
 cadastro()
+
+
+vcon.close()
