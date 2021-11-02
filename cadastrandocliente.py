@@ -1,22 +1,9 @@
-#casastrocliente simples 0.4
+#casastrocliente simples 0.5
 from datetime import datetime
 import sqlite3
 from sqlite3 import Error
 
 # variaveis utilizadas na função cadastro() e
-nome = ''
-contato =''
-endereco = ''
-placa = ''
-modelo = ''
-cor = ''
-ano = ''
-tipodeservico = ''
-observacao = ''
-custo = ''
-pago = ''
-data = ''
-prazo = ''
 
 
 def limpa(): #limpar a tela
@@ -24,7 +11,7 @@ def limpa(): #limpar a tela
 
 
 def ConexaoBanco(): #conexao com banco de dados
-    caminho = "/localdoseuarquivo/basededadosoficina.db"
+    caminho = "/escreva seu diretorio aqui/basededadosoficina.db"
     con = None
     try:
         con = sqlite3.connect(caminho)
@@ -46,26 +33,60 @@ def insert(conexao,sql): #inserindo informações no banco de dados
 vcon = ConexaoBanco()
 
 
+class Cliente:
+    def __init__(self, clien, conta, ender, placa, model, cor, ano, tipod, custo, pago, data, prazo, obser):
+        self.cliente = clien
+        self.contato = conta
+        self.endereco = ender
+        self.placa = placa
+        self.modelo = model
+        self.cor = cor
+        self.ano = ano
+        self.tipodeservico = tipod
+        self.custo = custo
+        self.pago = pago
+        self.data = data
+        self.prazo = prazo
+        self.observacao = obser
+
+    def InfoCliente(self):
+        limpa()
+        print('-'*35)
+        print(f'Nome do Cliente.: {self.cliente}\n'
+              f'Contato.........: {self.contato}\n'
+              f'Endereço........: {self.endereco}\n'
+              f'Placa...........: {self.placa}\n'
+              f'Marca/Modelo....: {self.modelo}\n'
+              f'Cor.............: {self.cor}\n'
+              f'Ano.............: {self.ano}\n'
+              f'Tipo de serviço.: {self.tipodeservico}\n'
+              f'Custo...........: {self.custo}\n'
+              f'Pagamento.......: {self.pago}\n'
+              f'Data............: {self.data}\n'
+              f'Prazo de entrega: {self.prazo}\n'
+              f'Observações.....: {self.observacao}\n')
+        print('-'*35)
+
+
 def cadastro():
-    global nome
-    global contato
-    global endereco
-    global placa
-    global modelo
-    global cor
-    global ano
-    global tipodeservico
-    global observacao
-    global custo
-    global pago
-    global data
-    global prazo
-    global importar
-    global insql
     limpa()
     cadastro_loop = False
     while not cadastro_loop:
-        nome = input('Nome do Cliente.......................: ')
+        # cliente = 'Ataide Colombo'
+        # contato = '99123456'
+        # endereco = 'Rua Flores 987'
+        # placa = 'IRO1234'
+        # modelo = 'Nissan - Jetta'
+        # cor = 'Prata'
+        # ano = '2021'
+        # tipodeservico = 'Revisao de freios e correia'
+        # observacao = 'Cliente especial'
+        # custo = '150'
+        # pago = 'avista'
+        # data = datetime.today().strftime('%d-%m-%Y')
+        # prazo = 'Hoje'
+        # para teste
+        cliente = input('Nome do Cliente.......................: ')
         contato = input('Contato............................: ')
         endereco = input('Endereço..........................: ')
         placa = input('Placa do veiculo.....................: ')
@@ -73,30 +94,20 @@ def cadastro():
         cor = input('Cor....................................: ')
         ano = input('Ano de fabricação......................: ')
         tipodeservico = input('Descreva o serviço contratado: ')
-        observacao = input('Observações.....................: ')
         custo = input('Valor do serviço.....................: ')
         pago = input('Pagamento.............................: ')
         data = datetime.today().strftime('%d-%m-%Y')
         prazo = input('Prazo de entrega.....................: ')
+        observacao = input('Observações.....................: ')
+        novocliente = Cliente(cliente,contato,endereco,placa,modelo,cor,ano,tipodeservico,custo,pago,
+                              data,prazo,observacao)
         cadastro_seguranca = False
         while not cadastro_seguranca: #verificando itens antes de salvar
             limpa()
             print('REVISÃO DO CADASTRO:'
                   '-------------------')
             print('-' * 35)
-            print(f'Nome do Cliente.: {nome}\n'
-                  f'Contato.........: {contato}\n'
-                  f'Endereço........: {endereco}\n'
-                  f'Placa...........: {placa}\n'
-                  f'Marca/Modelo....: {modelo}\n'
-                  f'Cor.............: {cor}\n'
-                  f'Ano.............: {ano}\n'
-                  f'Tipo de serviço.: {tipodeservico}\n'
-                  f'Observações.....: {observacao}\n'
-                  f'Custo...........: {custo}\n'
-                  f'Pagamento.......: {pago}\n'
-                  f'Data............: {data}\n'
-                  f'Prazo de entrega: {prazo}\n')
+            novocliente.InfoCliente()
             print('-' * 35)
             perg = False
             while not perg:
@@ -109,10 +120,11 @@ def cadastro():
                     insql = """INSERT INTO clientesdb
                                     (NOME,CONTATO,ENDERECO,PLACA,MODELO,COR,ANO,TIPODESERVICO,OBERVACAO,CUSTO,PAGO,
                                      DATA, PRAZO)
-                             VALUES('""" + nome + """','""" + contato + """','""" + endereco + """',
-                             '""" + placa + """','""" + modelo + """','""" + cor + """','""" + ano + """',
-                             '""" + tipodeservico + """','""" + observacao + """','""" + custo + """',
-                             '""" + pago + """','""" + data + """','""" + prazo + """'
+                             VALUES('""" + novocliente.cliente + """','""" + novocliente.contato + """',
+                             '""" + novocliente.endereco + """','""" + novocliente.placa + """','""" + novocliente.modelo + """',
+                             '""" + novocliente.cor + """','""" + novocliente.ano + """','""" + novocliente.tipodeservico + """',
+                             '""" + novocliente.observacao + """','""" + novocliente.custo + """','""" + novocliente.pago + """',
+                             '""" + novocliente.data + """','""" + novocliente.prazo + """'
                                     )"""
                     insert(vcon, insql) #inserindo na tabela
                     print('Cliente salvo com sucesso!')
@@ -132,6 +144,4 @@ def cadastro():
 
 
 cadastro()
-
-
 vcon.close()
