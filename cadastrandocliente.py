@@ -3,9 +3,6 @@ from datetime import datetime
 import sqlite3
 from sqlite3 import Error
 
-# variaveis utilizadas na função cadastro() e
-
-
 def limpa(): #limpar a tela
     print('\n'*100)
 
