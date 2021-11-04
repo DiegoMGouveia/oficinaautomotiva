@@ -1,14 +1,15 @@
-#casastrocliente simples 0.5
+#casastrocliente simples 0.6
 from datetime import datetime
 import sqlite3
 from sqlite3 import Error
+
 
 def limpa(): #limpar a tela
     print('\n'*100)
 
 
 def ConexaoBanco(): #conexao com banco de dados
-    caminho = "/escreva seu diretorio aqui/basededadosoficina.db"
+    caminho = "/ESCREVA O PATH DA SUA DB AQUI/lojacarros/basededadosoficina.db"
     con = None
     try:
         con = sqlite3.connect(caminho)
@@ -22,10 +23,8 @@ def insert(conexao,sql): #inserindo informações no banco de dados
         c = conexao.cursor()
         c.execute(sql)
         conexao.commit()
-
     except Error as ex:
         print(ex)
-
 
 vcon = ConexaoBanco()
 
@@ -46,7 +45,7 @@ class Cliente:
         self.prazo = prazo
         self.observacao = obser
 
-    def InfoCliente(self):
+    def Info(self):
         limpa()
         print('-'*35)
         print(f'Nome do Cliente.: {self.cliente}\n'
@@ -69,21 +68,7 @@ def cadastro():
     limpa()
     cadastro_loop = False
     while not cadastro_loop:
-        # cliente = 'Ataide Colombo'
-        # contato = '99123456'
-        # endereco = 'Rua Flores 987'
-        # placa = 'IRO1234'
-        # modelo = 'Nissan - Jetta'
-        # cor = 'Prata'
-        # ano = '2021'
-        # tipodeservico = 'Revisao de freios e correia'
-        # observacao = 'Cliente especial'
-        # custo = '150'
-        # pago = 'avista'
-        # data = datetime.today().strftime('%d-%m-%Y')
-        # prazo = 'Hoje'
-        # para teste
-        cliente = input('Nome do Cliente.......................: ')
+        cliente = input('Nome do Cliente....................: ')
         contato = input('Contato............................: ')
         endereco = input('Endereço..........................: ')
         placa = input('Placa do veiculo.....................: ')
@@ -104,24 +89,22 @@ def cadastro():
             print('REVISÃO DO CADASTRO:'
                   '-------------------')
             print('-' * 35)
-            novocliente.InfoCliente()
+            novoc.Info()
             print('-' * 35)
             perg = False
             while not perg:
-                perg = input('[ S ] Salvar'
-                             '[ E ] Editar'
-                             ' ')
+                perg = input('[ S ] Salvar [ E ] Editar ')
                 if perg in 'Ss':
                     salvaseguranca = True
                     perg = 0
                     insql = """INSERT INTO clientesdb
                                     (NOME,CONTATO,ENDERECO,PLACA,MODELO,COR,ANO,TIPODESERVICO,OBERVACAO,CUSTO,PAGO,
                                      DATA, PRAZO)
-                             VALUES('""" + novocliente.cliente + """','""" + novocliente.contato + """',
-                             '""" + novocliente.endereco + """','""" + novocliente.placa + """','""" + novocliente.modelo + """',
-                             '""" + novocliente.cor + """','""" + novocliente.ano + """','""" + novocliente.tipodeservico + """',
-                             '""" + novocliente.observacao + """','""" + novocliente.custo + """','""" + novocliente.pago + """',
-                             '""" + novocliente.data + """','""" + novocliente.prazo + """'
+                             VALUES('""" + novoc.cliente + """','""" + novoc.contato + """',
+                             '""" + novoc.endereco + """','""" + novoc.placa + """','""" + novoc.modelo + """',
+                             '""" + novoc.cor + """','""" + novoc.ano + """','""" + novoc.tipodeservico + """',
+                             '""" + novoc.observacao + """','""" + novoc.custo + """','""" + novoc.pago + """',
+                             '""" + novoc.data + """','""" + novoc.prazo + """'
                                     )"""
                     insert(vcon, insql) #inserindo na tabela
                     print('Cliente salvo com sucesso!')
