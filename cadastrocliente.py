@@ -1,15 +1,24 @@
-#casastrocliente simples 0.6
+#casastrocliente simples 0.7
+
 from datetime import datetime
 import sqlite3
 from sqlite3 import Error
 
+
+def menu():
+    limpa()
+    print('Digite uma opção:\n'
+          '----------------\n'
+          '[1] Cadastrar Cliente\n'
+          '[2] Buscar/Editar Cliente\n'
+          '[3] Excluir CLiente')
 
 def limpa(): #limpar a tela
     print('\n'*100)
 
 
 def ConexaoBanco(): #conexao com banco de dados
-    caminho = "/ESCREVA O PATH DA SUA DB AQUI/lojacarros/basededadosoficina.db"
+    caminho = "/DIGITE O ENDEREÇO DA SUA DATABASE AQUI/basededadosoficina.db"
     con = None
     try:
         con = sqlite3.connect(caminho)
@@ -18,10 +27,19 @@ def ConexaoBanco(): #conexao com banco de dados
     return con
 
 
-def insert(conexao,sql): #inserindo informações no banco de dados
+def insert(conexao,args): #inserindo informações no banco de dados
+    insql = """INSERT INTO clientesdb
+                     (NOME,CONTATO,ENDERECO,PLACA,MODELO,COR,ANO,TIPODESERVICO,OBERVACAO,CUSTO,PAGO,
+                      DATA, PRAZO)
+              VALUES('""" + args.cliente + """','""" + args.contato + """',
+              '""" + args.endereco + """','""" + args.placa + """','""" + args.modelo + """',
+              '""" + args.cor + """','""" + args.ano + """','""" + args.tipodeservico + """',
+              '""" + args.observacao + """','""" + args.custo + """','""" + args.pago + """',
+              '""" + args.data + """','""" + args.prazo + """'
+                     )"""
     try:
         c = conexao.cursor()
-        c.execute(sql)
+        c.execute(insql)
         conexao.commit()
     except Error as ex:
         print(ex)
@@ -45,7 +63,7 @@ class Cliente:
         self.prazo = prazo
         self.observacao = obser
 
-    def Info(self):
+    def InfoCliente(self):
         limpa()
         print('-'*35)
         print(f'Nome do Cliente.: {self.cliente}\n'
@@ -64,64 +82,57 @@ class Cliente:
         print('-'*35)
 
 
-def cadastro():
+def cadastro(args):
     limpa()
-    cadastro_loop = False
-    while not cadastro_loop:
-        cliente = input('Nome do Cliente....................: ')
-        contato = input('Contato............................: ')
-        endereco = input('Endereço..........................: ')
-        placa = input('Placa do veiculo.....................: ')
-        modelo = input('Marca e modelo......................: ')
-        cor = input('Cor....................................: ')
-        ano = input('Ano de fabricação......................: ')
-        tipodeservico = input('Descreva o serviço contratado: ')
-        custo = input('Valor do serviço.....................: ')
-        pago = input('Pagamento.............................: ')
-        data = datetime.today().strftime('%d-%m-%Y')
-        prazo = input('Prazo de entrega.....................: ')
-        observacao = input('Observações.....................: ')
-        novocliente = Cliente(cliente,contato,endereco,placa,modelo,cor,ano,tipodeservico,custo,pago,
-                              data,prazo,observacao)
-        cadastro_seguranca = False
-        while not cadastro_seguranca: #verificando itens antes de salvar
-            limpa()
-            print('REVISÃO DO CADASTRO:'
-                  '-------------------')
-            print('-' * 35)
-            novoc.Info()
-            print('-' * 35)
-            perg = False
-            while not perg:
-                perg = input('[ S ] Salvar [ E ] Editar ')
-                if perg in 'Ss':
-                    salvaseguranca = True
-                    perg = 0
-                    insql = """INSERT INTO clientesdb
-                                    (NOME,CONTATO,ENDERECO,PLACA,MODELO,COR,ANO,TIPODESERVICO,OBERVACAO,CUSTO,PAGO,
-                                     DATA, PRAZO)
-                             VALUES('""" + novoc.cliente + """','""" + novoc.contato + """',
-                             '""" + novoc.endereco + """','""" + novoc.placa + """','""" + novoc.modelo + """',
-                             '""" + novoc.cor + """','""" + novoc.ano + """','""" + novoc.tipodeservico + """',
-                             '""" + novoc.observacao + """','""" + novoc.custo + """','""" + novoc.pago + """',
-                             '""" + novoc.data + """','""" + novoc.prazo + """'
-                                    )"""
-                    insert(vcon, insql) #inserindo na tabela
-                    print('Cliente salvo com sucesso!')
-                    cadastro_seguranca = True
-                    perg = True
-                    cadastro_loop = True
-                    continue
-                elif perg in 'Ee':
-                    limpa()
-                    print('OK, vamos recomeçar')
-                    cadastro_seguranca = True
-                    perg = True
-                    continue
-                else:
-                    print('Digite uma opção válida!')
-                    perg = False
+    cliente = input('Nome do Cliente.......................: ')
+    contato = input('Contato............................: ')
+    endereco = input('Endereço..........................: ')
+    placa = input('Placa do veiculo.....................: ')
+    modelo = input('Marca e modelo......................: ')
+    cor = input('Cor....................................: ')
+    ano = input('Ano de fabricação......................: ')
+    tipodeservico = input('Descreva o serviço contratado: ')
+    custo = input('Valor do serviço.....................: ')
+    pago = input('Pagamento.............................: ')
+    data = datetime.today().strftime('%d-%m-%Y')
+    prazo = input('Prazo de entrega.....................: ')
+    observacao = input('Observações.....................: ')
+    novocliente = args(cliente,contato,endereco,placa,modelo,cor,ano,tipodeservico,custo,pago,
+                          data,prazo,observacao)
+    return novocliente
 
 
-cadastro()
+def revisao(arg):
+    limpa()
+    print('-' * 35)
+    arg.InfoCliente()
+    print('-' * 35)
+
+
+######## inicio do programa
+programa = True
+menu()
+while programa:
+    opcao_menu = input('Digite uma opção do menu: ')
+    if opcao_menu.isnumeric():
+        if int(opcao_menu) == 1:
+            while programa:
+                cliente = cadastro(Cliente)
+                revisao(cliente)
+                while programa:
+                    save = input('Salvar cliente? [s/n] ')
+                    if save in 'SsNn':
+                        if save in 'Ss':
+                            save = insert(vcon, cliente)
+                            programa = False
+                            continue
+                    else:
+                        revisao(cliente)
+                        print('Digite apenas S ou N para responder!')
+                        continue
+    else:
+        menu()
+        print('Digite apenas números para escolher uma opção do menu!')
+        continue
+
 vcon.close()
