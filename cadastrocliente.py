@@ -1,8 +1,9 @@
-#casastrocliente simples 0.7
-
+#casastrocliente simples 0.8
 from datetime import datetime
 import sqlite3
 from sqlite3 import Error
+
+
 
 
 def menu():
@@ -18,7 +19,7 @@ def limpa(): #limpar a tela
 
 
 def ConexaoBanco(): #conexao com banco de dados
-    caminho = "/DIGITE O ENDEREÇO DA SUA DATABASE AQUI/basededadosoficina.db"
+    caminho = "/DIGITE O PATH DE SUA DATABASE AQUI/basededadosoficina.db"
     con = None
     try:
         con = sqlite3.connect(caminho)
@@ -28,15 +29,13 @@ def ConexaoBanco(): #conexao com banco de dados
 
 
 def insert(conexao,args): #inserindo informações no banco de dados
-    insql = """INSERT INTO clientesdb
+    insql = f"""INSERT INTO clientesdb
                      (NOME,CONTATO,ENDERECO,PLACA,MODELO,COR,ANO,TIPODESERVICO,OBERVACAO,CUSTO,PAGO,
                       DATA, PRAZO)
-              VALUES('""" + args.cliente + """','""" + args.contato + """',
-              '""" + args.endereco + """','""" + args.placa + """','""" + args.modelo + """',
-              '""" + args.cor + """','""" + args.ano + """','""" + args.tipodeservico + """',
-              '""" + args.observacao + """','""" + args.custo + """','""" + args.pago + """',
-              '""" + args.data + """','""" + args.prazo + """'
-                     )"""
+              VALUES('{args.cliente}', '{args.contato}', '{args.endereco}', '{args.placa}',
+                    '{args.modelo}','{args.cor}','{args.ano}','{args.tipodeservico}','{args.observacao}',
+                    '{args.custo}','{args.pago}','{args.data}','{args.prazo}'
+                    )"""
     try:
         c = conexao.cursor()
         c.execute(insql)
@@ -84,7 +83,7 @@ class Cliente:
 
 def cadastro(args):
     limpa()
-    cliente = input('Nome do Cliente.......................: ')
+    cliente = input('Nome do Cliente....................: ')
     contato = input('Contato............................: ')
     endereco = input('Endereço..........................: ')
     placa = input('Placa do veiculo.....................: ')
